@@ -69,8 +69,8 @@ body {
 /* Hero Section */
 .hero {
     height: 80vh;
-    background: linear-gradient(to bottom, rgba(15, 23, 42, 0.9), rgba(255, 85, 85, 0.3)), 
-                url('../images/image.webp') no-repeat center center;
+    background: linear-gradient(to bottom, rgba(19, 30, 54, 0.9), rgba(35, 52, 78, 0.8)),
+                url('../images/image.webp') no-repeat center center fixed;
     background-size: cover;
     display: flex;
     align-items: center;
@@ -234,13 +234,18 @@ body {
     color: #e2e8f0;
 }
 .about-content {
-    background: #0f172a;
-    border: 2px solid #38bdf8;
-    border-radius: 15px;
+    background: linear-gradient(135deg, #1e293b, #2d3748),
+                url('../images/card-texture.png') center center;
+    border: 3px solid #ffd700; /* Borda dourada igual à query-card */
+    border-radius: 15px; /* Aumentar o border-radius para consistência */
     padding: 2rem;
     color: #e2e8f0;
     font-size: 1.1rem;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); /* Sombra dourada */
+    animation: float 3s infinite ease-in-out; /* Animação flutuante */
+    transition: all 0.3s ease; /* Transição suave para hover */
 }
+
 .about-content p {
     margin-bottom: 1rem;
 }
@@ -349,12 +354,13 @@ body {
 
 .footer-link {
     color: #38bdf8;
-    font-size: 1.5rem;
+    font-size: 2.5rem;
     transition: color 0.3s ease;
 }
 
 .footer-link:hover {
     color: #ffc107;
+    transform: scale(1.1);
 }
 
 .footer p {
