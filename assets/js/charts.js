@@ -15,5 +15,21 @@ const victoryChart = new Chart(ctxVictory, {
             legend: { position: 'top' },
             title: { display: true, text: 'Porcentagem de Vitórias por Carta' }
         }
+        
     }
+    
+});
+
+const ctx = document.getElementById("winLossChart").getContext("2d");
+runQuery(calculateWinLossPercentage, "Carta X", "2025-01-01", "2025-01-31").then(data => {
+    new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: ["Vitórias", "Derrotas"],
+            datasets: [{
+                label: "Porcentagem",
+                data: [data.winPercentage, data.lossPercentage]
+            }]
+        }
+    });
 });
