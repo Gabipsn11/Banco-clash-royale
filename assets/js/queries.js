@@ -86,3 +86,12 @@ function calculateAverageMatchDuration(cardX) {
     console.log(`Calculando duração média das partidas envolvendo a carta ${cardX}`);
     // Aqui você faria a chamada à API ou consulta ao banco de dados
 }
+
+/**
+ * Consulta adicional 4: Lista os decks mais populares que utilizam uma carta específica.
+ * @param {string} cardX - Nome da carta.
+ */
+function listPopularDecksByCard(cardX) {
+    console.log(`Listando decks mais populares que utilizam a carta ${cardX}`);
+}
+    // Aqui você faria a chamada à API ou consulta ao banco de dados

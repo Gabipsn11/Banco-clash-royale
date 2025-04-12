@@ -167,12 +167,24 @@ body {
     color: #e2e8f0;
     margin-bottom: 1rem;
 }
+/* Mantém o estilo geral dos inputs */
 .query-card .form-control {
     background: #0f172a;
     border: 1px solid #38bdf8;
     color: #e2e8f0;
     border-radius: 8px;
     margin-bottom: 1rem;
+}
+
+/* Aplica cor branca apenas ao primeiro input de cada query-card */
+.query-card .form-control:first-of-type {
+    color: #ffffff; /* Texto branco */
+}
+
+/* Opcional: Ajusta a cor do placeholder para combinar */
+.query-card .form-control:first-of-type::placeholder {
+    color: #ffffff; /* Placeholder branco */
+    opacity: 0.7; /* Para não ficar muito brilhante */
 }
 .query-card .btn {
     background: linear-gradient(135deg, #ffc107, #ffd700);
@@ -404,4 +416,34 @@ body {
 /* Font Family Update */
 .section-title, .hero-title, .navbar-brand {
     font-family: 'Supercell-Magic', sans-serif;
+}
+
+/* Estado inicial das seções (antes da animação) */
+.section-hidden {
+    opacity: 0;
+    transform: translateY(30px); /* Começa 30px abaixo */
+}
+
+/* Estado final das seções (depois da animação) */
+.section-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+/* Animação opcional para maior impacto */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Aplica a animação quando a classe section-visible for adicionada */
+.section-visible {
+    animation: fadeInUp 0.6s ease-out forwards;
 }
