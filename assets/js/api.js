@@ -10,7 +10,7 @@ async function fetchClanData() {
         showLoading(); // Mostra o spinner de carregamento
         const response = await fetch(`https://api.clashroyale.com/v1/clans/%23${clanTag}`, {
             headers: {
-                Authorization: 'Bearer SEU_TOKEN_AQUI' // Substituir pelo token da API
+                Authorization: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjkzMmVhYzIwLTM2ODEtNGQzNC05NTQ1LTg1YTlmZGFiNjU4MSIsImlhdCI6MTc0MzgxODExOCwic3ViIjoiZGV2ZWxvcGVyLzdjMjkyNzdlLWIxYjEtZGM3Zi1mODI3LWEyMjE3MDlmYWIyYSIsInNjb3BlcyI6WyJyb3lhbGUiXSwibGltaXRzIjpbeyJ0aWVyIjoiZGV2ZWxvcGVyL3NpbHZlciIsInR5cGUiOiJ0aHJvdHRsaW5nIn0seyJjaWRycyI6WyI1NC44Ni41MC4xMzkiLCIxODcuMjEuMTMuMTk2Il0sInR5cGUiOiJjbGllbnQifV19.5EB80j73BrcIvJO6488i8PzVoxiW5RSQtyGrg9y8MxDazsghR2hQV7QawW-HrVGkajCkwTdHmF3JlvtpUOLb2w' // Substituir pelo token da API
             }
         });
 
@@ -39,7 +39,7 @@ async function searchClan() {
     try {
         const response = await fetch(`https://api.clashroyale.com/v1/clans?name=${encodeURIComponent(clanName)}`, {
             headers: {
-                Authorization: `Bearer SEU_TOKEN_AQUI` // Substitua pelo token da API
+                Authorization: `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjkzMmVhYzIwLTM2ODEtNGQzNC05NTQ1LTg1YTlmZGFiNjU4MSIsImlhdCI6MTc0MzgxODExOCwic3ViIjoiZGV2ZWxvcGVyLzdjMjkyNzdlLWIxYjEtZGM3Zi1mODI3LWEyMjE3MDlmYWIyYSIsInNjb3BlcyI6WyJyb3lhbGUiXSwibGltaXRzIjpbeyJ0aWVyIjoiZGV2ZWxvcGVyL3NpbHZlciIsInR5cGUiOiJ0aHJvdHRsaW5nIn0seyJjaWRycyI6WyI1NC44Ni41MC4xMzkiLCIxODcuMjEuMTMuMTk2Il0sInR5cGUiOiJjbGllbnQifV19.5EB80j73BrcIvJO6488i8PzVoxiW5RSQtyGrg9y8MxDazsghR2hQV7QawW-HrVGkajCkwTdHmF3JlvtpUOLb2w` // Substitua pelo token da API
             }
         });
 
@@ -122,7 +122,7 @@ async function loadCards() {
     try {
         const response = await fetch('https://api.clashroyale.com/v1/cards', {
             headers: {
-                Authorization: 'Bearer SEU_TOKEN_AQUI' // Substitua pelo token da API
+                Authorization: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjkzMmVhYzIwLTM2ODEtNGQzNC05NTQ1LTg1YTlmZGFiNjU4MSIsImlhdCI6MTc0MzgxODExOCwic3ViIjoiZGV2ZWxvcGVyLzdjMjkyNzdlLWIxYjEtZGM3Zi1mODI3LWEyMjE3MDlmYWIyYSIsInNjb3BlcyI6WyJyb3lhbGUiXSwibGltaXRzIjpbeyJ0aWVyIjoiZGV2ZWxvcGVyL3NpbHZlciIsInR5cGUiOiJ0aHJvdHRsaW5nIn0seyJjaWRycyI6WyI1NC44Ni41MC4xMzkiLCIxODcuMjEuMTMuMTk2Il0sInR5cGUiOiJjbGllbnQifV19.5EB80j73BrcIvJO6488i8PzVoxiW5RSQtyGrg9y8MxDazsghR2hQV7QawW-HrVGkajCkwTdHmF3JlvtpUOLb2w' // Substitua pelo token da API
             }
         });
 
@@ -272,7 +272,7 @@ async function loadAvailableCards() {
     try {
         const response = await fetch('https://api.clashroyale.com/v1/cards', {
             headers: {
-                Authorization: `Bearer SEU_TOKEN_AQUI` // Substitua pelo token da API
+                Authorization: `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjkzMmVhYzIwLTM2ODEtNGQzNC05NTQ1LTg1YTlmZGFiNjU4MSIsImlhdCI6MTc0MzgxODExOCwic3ViIjoiZGV2ZWxvcGVyLzdjMjkyNzdlLWIxYjEtZGM3Zi1mODI3LWEyMjE3MDlmYWIyYSIsInNjb3BlcyI6WyJyb3lhbGUiXSwibGltaXRzIjpbeyJ0aWVyIjoiZGV2ZWxvcGVyL3NpbHZlciIsInR5cGUiOiJ0aHJvdHRsaW5nIn0seyJjaWRycyI6WyI1NC44Ni41MC4xMzkiLCIxODcuMjEuMTMuMTk2Il0sInR5cGUiOiJjbGllbnQifV19.5EB80j73BrcIvJO6488i8PzVoxiW5RSQtyGrg9y8MxDazsghR2hQV7QawW-HrVGkajCkwTdHmF3JlvtpUOLb2w` // Substitua pelo token da API
             }
         });
 
