@@ -1,28 +1,25 @@
-// Requisito: Driver MongoDB para Node.js
-// Instale com: npm install mongodb
+const express = require('express');
+const { MongoClient } = require('mongodb');
+const cors = require('cors');
 
-// Função auxiliar para conectar ao MongoDB e executar consultas
-async function runQuery(queryFn, ...params) {
-    const { MongoClient } = require("mongodb");
-    const client = new MongoClient("mongodb://localhost:27017"); // Ajuste a URL para MongoDB local ou Atlas
-    try {
-        await client.connect();
-        const db = client.db("clashRoyale");
-        return await queryFn(db, ...params);
-    } catch (error) {
-        console.error("Erro ao executar consulta:", error);
-        throw error;
-    } finally {
-        await client.close();
-    }
+const app = express();
+const port = 3000;
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Conexão com MongoDB
+const url = 'mongodb://localhost:27017'; // Ajuste para MongoDB Atlas se necessário
+const client = new MongoClient(url);
+const dbName = 'clashRoyale';
+
+async function connectDB() {
+    await client.connect();
+    return client.db(dbName);
 }
 
-/**
- * Consulta 1: Calcula a porcentagem de vitórias e derrotas utilizando a carta X em um intervalo de timestamps.
- * @param {string} cardX - Nome da carta.
- * @param {string} startTimestamp - Timestamp inicial (ex: "2025-01-01").
- * @param {string} endTimestamp - Timestamp final (ex: "2025-01-31").
- */
+// Consultas (copiadas do código anterior, com ajustes para API)
 async function calculateWinLossPercentage(db, cardX, startTimestamp, endTimestamp) {
     const result = await db.collection("battles").aggregate([
         {
@@ -69,12 +66,6 @@ async function calculateWinLossPercentage(db, cardX, startTimestamp, endTimestam
     return result.length > 0 ? result[0] : { winPercentage: 0, lossPercentage: 0 };
 }
 
-/**
- * Consulta 2: Lista os decks completos que produziram mais de X% de vitórias em um intervalo de timestamps.
- * @param {number} percentage - Porcentagem mínima de vitórias.
- * @param {string} startTimestamp - Timestamp inicial.
- * @param {string} endTimestamp - Timestamp final.
- */
 async function listWinningDecks(db, percentage, startTimestamp, endTimestamp) {
     const result = await db.collection("battles").aggregate([
         {
@@ -152,12 +143,6 @@ async function listWinningDecks(db, percentage, startTimestamp, endTimestamp) {
     return result;
 }
 
-/**
- * Consulta 3: Calcula a quantidade de derrotas utilizando o combo de cartas (X1, X2, ...) em um intervalo de timestamps.
- * @param {Array<string>} cards - Array de cartas no combo.
- * @param {string} startTimestamp - Timestamp inicial.
- * @param {string} endTimestamp - Timestamp final.
- */
 async function calculateComboLosses(db, cards, startTimestamp, endTimestamp) {
     const result = await db.collection("battles").aggregate([
         {
@@ -177,17 +162,12 @@ async function calculateComboLosses(db, cards, startTimestamp, endTimestamp) {
     return result.length > 0 ? result[0].totalLosses : 0;
 }
 
-/**
- * Consulta 4: Calcula a quantidade de vitórias envolvendo a carta X com condições específicas.
- * @param {string} cardX - Nome da carta.
- * @param {number} trophyDifference - Diferença percentual de troféus (ex: 20 para 20%).
- */
 async function calculateSpecialWins(db, cardX, trophyDifference) {
     const result = await db.collection("battles").aggregate([
         {
             $match: {
                 winnerDeck: cardX,
-                duration: { $lt: 120 }, // Menos de 2 minutos
+                duration: { $lt: 120 },
                 loserTowersDestroyed: { $gte: 2 },
                 $expr: {
                     $lte: [
@@ -205,13 +185,6 @@ async function calculateSpecialWins(db, cardX, trophyDifference) {
     return result.length > 0 ? result[0].totalWins : 0;
 }
 
-/**
- * Consulta 5: Lista o combo de cartas de tamanho N que produziram mais de Y% de vitórias em um intervalo de timestamps.
- * @param {number} comboSize - Tamanho do combo (ex: 3 para 3 cartas).
- * @param {number} percentage - Porcentagem mínima de vitórias.
- * @param {string} startTimestamp - Timestamp inicial.
- * @param {string} endTimestamp - Timestamp final.
- */
 async function listWinningCombos(db, comboSize, percentage, startTimestamp, endTimestamp) {
     const result = await db.collection("battles").aggregate([
         {
@@ -302,12 +275,6 @@ async function listWinningCombos(db, comboSize, percentage, startTimestamp, endT
     return result.length > 0 ? result[0].combos : [];
 }
 
-/**
- * Consulta Adicional 1: Calcula a taxa de uso de uma carta específica em partidas.
- * @param {string} cardX - Nome da carta.
- * @param {string} startTimestamp - Timestamp inicial.
- * @param {string} endTimestamp - Timestamp final.
- */
 async function calculateCardUsageRate(db, cardX, startTimestamp, endTimestamp) {
     const result = await db.collection("battles").aggregate([
         {
@@ -343,10 +310,6 @@ async function calculateCardUsageRate(db, cardX, startTimestamp, endTimestamp) {
     return result.length > 0 ? result[0].usageRate : 0;
 }
 
-/**
- * Consulta Adicional 2: Lista os jogadores com maior taxa de vitórias utilizando uma carta específica.
- * @param {string} cardX - Nome da carta.
- */
 async function listTopPlayersByCard(db, cardX) {
     const result = await db.collection("battles").aggregate([
         {
@@ -415,10 +378,6 @@ async function listTopPlayersByCard(db, cardX) {
     return result;
 }
 
-/**
- * Consulta Adicional 3: Calcula a média de duração das partidas envolvendo uma carta específica.
- * @param {string} cardX - Nome da carta.
- */
 async function calculateAverageMatchDuration(db, cardX) {
     const result = await db.collection("battles").aggregate([
         {
@@ -440,10 +399,6 @@ async function calculateAverageMatchDuration(db, cardX) {
     return result.length > 0 ? result[0].averageDuration : 0;
 }
 
-/**
- * Consulta Adicional 4: Lista os decks mais populares que utilizam uma carta específica.
- * @param {string} cardX - Nome da carta.
- */
 async function listPopularDecksByCard(db, cardX) {
     const result = await db.collection("battles").aggregate([
         {
@@ -489,39 +444,107 @@ async function listPopularDecksByCard(db, cardX) {
     return result;
 }
 
-// Chamadas de teste
-runQuery(calculateWinLossPercentage, "Carta X", "2025-01-01", "2025-01-31")
-    .then(result => console.log("Consulta 1 - Win/Loss Percentage:", result))
-    .catch(err => console.error("Erro Consulta 1:", err));
+// Endpoints
+app.post('/api/calculateWinLossPercentage', async (req, res) => {
+    const { cardX, startTimestamp, endTimestamp } = req.body;
+    try {
+        const db = await connectDB();
+        const result = await calculateWinLossPercentage(db, cardX, startTimestamp, endTimestamp);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
-runQuery(listWinningDecks, 60, "2025-01-01", "2025-01-31")
-    .then(result => console.log("Consulta 2 - Winning Decks:", result))
-    .catch(err => console.error("Erro Consulta 2:", err));
+app.post('/api/listWinningDecks', async (req, res) => {
+    const { percentage, startTimestamp, endTimestamp } = req.body;
+    try {
+        const db = await connectDB();
+        const result = await listWinningDecks(db, percentage, startTimestamp, endTimestamp);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
-runQuery(calculateComboLosses, ["Hog Rider", "Fireball"], "2025-01-01", "2025-01-31")
-    .then(result => console.log("Consulta 3 - Combo Losses:", result))
-    .catch(err => console.error("Erro Consulta 3:", err));
+app.post('/api/calculateComboLosses', async (req, res) => {
+    const { cards, startTimestamp, endTimestamp } = req.body;
+    try {
+        const db = await connectDB();
+        const result = await calculateComboLosses(db, cards, startTimestamp, endTimestamp);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
-runQuery(calculateSpecialWins, "Hog Rider", 20)
-    .then(result => console.log("Consulta 4 - Special Wins:", result))
-    .catch(err => console.error("Erro Consulta 4:", err));
+app.post('/api/calculateSpecialWins', async (req, res) => {
+    const { cardX, trophyDifference } = req.body;
+    try {
+        const db = await connectDB();
+        const result = await calculateSpecialWins(db, cardX, trophyDifference);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
-runQuery(listWinningCombos, 3, 70, "2025-01-01", "2025-01-31")
-    .then(result => console.log("Consulta 5 - Winning Combos:", result))
-    .catch(err => console.error("Erro Consulta 5:", err));
+app.post('/api/listWinningCombos', async (req, res) => {
+    const { comboSize, percentage, startTimestamp, endTimestamp } = req.body;
+    try {
+        const db = await connectDB();
+        const result = await listWinningCombos(db, comboSize, percentage, startTimestamp, endTimestamp);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
-runQuery(calculateCardUsageRate, "Hog Rider", "2025-01-01", "2025-01-31")
-    .then(result => console.log("Consulta Adicional 1 - Card Usage Rate:", result))
-    .catch(err => console.error("Erro Consulta Adicional 1:", err));
+app.post('/api/calculateCardUsageRate', async (req, res) => {
+    const { cardX, startTimestamp, endTimestamp } = req.body;
+    try {
+        const db = await connectDB();
+        const result = await calculateCardUsageRate(db, cardX, startTimestamp, endTimestamp);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
-runQuery(listTopPlayersByCard, "Hog Rider")
-    .then(result => console.log("Consulta Adicional 2 - Top Players:", result))
-    .catch(err => console.error("Erro Consulta Adicional 2:", err));
+app.post('/api/listTopPlayersByCard', async (req, res) => {
+    const { cardX } = req.body;
+    try {
+        const db = await connectDB();
+        const result = await listTopPlayersByCard(db, cardX);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
-runQuery(calculateAverageMatchDuration, "Hog Rider")
-    .then(result => console.log("Consulta Adicional 3 - Average Match Duration:", result))
-    .catch(err => console.error("Erro Consulta Adicional 3:", err));
+app.post('/api/calculateAverageMatchDuration', async (req, res) => {
+    const { cardX } = req.body;
+    try {
+        const db = await connectDB();
+        const result = await calculateAverageMatchDuration(db, cardX);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
-runQuery(listPopularDecksByCard, "Hog Rider")
-    .then(result => console.log("Consulta Adicional 4 - Popular Decks:", result))
-    .catch(err => console.error("Erro Consulta Adicional 4:", err));
+app.post('/api/listPopularDecksByCard', async (req, res) => {
+    const { cardX } = req.body;
+    try {
+        const db = await connectDB();
+        const result = await listPopularDecksByCard(db, cardX);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Iniciar servidor
+app.listen(port, () => {
+    console.log(`Servidor rodando em http://localhost:${port}`);
+});
